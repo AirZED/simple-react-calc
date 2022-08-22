@@ -8,9 +8,18 @@ const Calculator = (props) => {
   const [displayQ, setDisplayQ] = useState([]);
   //handleCalulation logic
   const handleCalculation = (digits) => {
-    let realValues = digits.toString().replaceAll(",", "");
-    let answer = eval(realValues);
-    return answer;
+    let realValues = digits.toString().replaceAll(",", " ");
+
+    try {
+      if (!realValues) {
+        return 0;
+      } else {
+        let answer = eval(realValues);
+        return answer.toFixed(2);
+      }
+    } catch (error) {
+      return NaN;
+    }
   };
   //HANDLE CALCULATION FUNCTION
   const handleEvaluation = (e) => {
@@ -18,7 +27,7 @@ const Calculator = (props) => {
     if (!buttonClicked.id) {
       return;
     }
-
+    console.log(e.target.textContent);
     questions.length < 1 && setDisplayQ([]); //set display questions back to nothing on new question
 
     //VALIDATE BUTTON CLICK
@@ -30,7 +39,12 @@ const Calculator = (props) => {
     } else if (buttonClicked.id === "backspace") {
       //Backspaces the question coloum;
       let removedEl = questions.pop();
-      setDisplayQ((element) => element.filter((value) => value !== removedEl));
+      console.log(questions);
+      setDisplayQ((element) =>
+        element.filter(
+          (value, id, arr) => id !== arr.length - 1 || value !== removedEl
+        )
+      );
     } else if (buttonClicked.id === "percent") {
       //calculate percentage
       console.log("Percent");
