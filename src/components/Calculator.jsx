@@ -1,5 +1,3 @@
-import BackspaceOutlinedIcon from "@mui/icons-material/BackspaceOutlined";
-import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
 import { useState } from "react";
 
 let questions = [];
@@ -21,17 +19,28 @@ const Calculator = (props) => {
       return;
     }
 
+    questions.length < 1 && setDisplayQ([]); //set display questions back to nothing on new question
+
+    //VALIDATE BUTTON CLICK
     if (buttonClicked.id === "cancel") {
-      console.log("CANCEL");
+      //reset questions and answers displayed.
+      setDisplayA(0);
+      setDisplayQ([]);
+      questions = [];
     } else if (buttonClicked.id === "backspace") {
-      console.log("BACKSPACE");
+      //Backspaces the question coloum;
+      let removedEl = questions.pop();
+      setDisplayQ((element) => element.filter((value) => value !== removedEl));
     } else if (buttonClicked.id === "percent") {
+      //calculate percentage
       console.log("Percent");
     } else if (buttonClicked.id === "equal") {
+      //Equate the questions and arrive at an answer
       setDisplayA(handleCalculation(questions));
       questions = [];
       prevAns = handleCalculation(questions);
     } else {
+      //Allow questions input
       setDisplayQ((prev) => [...prev, buttonClicked.textContent]);
       questions.push(buttonClicked.textContent);
     }
